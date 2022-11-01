@@ -2,6 +2,7 @@ from django.shortcuts import render
 from .forms import FileFieldForm
 from django.core.files.storage import FileSystemStorage
 from .scripts.eva_cli import eva_main
+import json
 
 # Create your views here.
 def home_screen(request):
@@ -12,6 +13,7 @@ def home_screen(request):
         processing = True
         form = FileFieldForm(request.POST, request.FILES)
         files = request.FILES.getlist('file_field')
+        overrides = json.loads(request.POST.get('overrides'))
 
         fs = FileSystemStorage()
         upload_save_fnames = []
@@ -19,7 +21,7 @@ def home_screen(request):
             name = fs.save(file.name, file)
             upload_save_fnames.append(name)
 
-        export_file_url = fs.url(eva_main(upload_save_fnames, []))
+        export_file_url = fs.url(eva_main(upload_save_fnames, overrides))
         processing = False
     else:
         form = FileFieldForm()
