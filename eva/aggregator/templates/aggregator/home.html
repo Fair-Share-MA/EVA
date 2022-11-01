@@ -4,11 +4,26 @@
   <p class="subtitle">Combine data:</p>
   <form action="{% url 'home' %}" method="post" enctype="multipart/form-data">
     {% csrf_token %}
-    <p>{{form.file_field}}</p>
-    <p><input type="submit" value="Upload" /></p>
+    <div class="field">
+      <label class="label">Upload Files</label>
+      <div class="control">{{form.file_field}}</div>
+      <p class="help">Select all the files you wish to combine and upload</p>
+    </div>
+
+    <div class="control">
+      <button class="button is-primary" type="submit">Upload & Process</button>
+    </div>
   </form>
 </section>
 
-{% if export_result %}
-<p><a href="{{ export_result }}">Download result CSV</a></p>
+{% if processing %}
+<section class="section">
+  <p class="subtitle">Processing files...</p>
+  <progress class="progress is-info" max="100">Processing</progress>
+</section>
+{% endif %} {% if export_result %}
+<section class="section">
+  <p class="subtitle">Download Result CSV:</p>
+  <a class="button is-link" href="{{ export_result }}">Download</a>
+</section>
 {% endif %} {% endblock content %}

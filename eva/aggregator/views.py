@@ -6,8 +6,10 @@ from .scripts.eva_cli import eva_main
 # Create your views here.
 def home_screen(request):
     export_file_url = None
+    processing = False
 
     if request.method == "POST":
+        processing = True
         form = FileFieldForm(request.POST, request.FILES)
         files = request.FILES.getlist('file_field')
 
@@ -18,10 +20,12 @@ def home_screen(request):
             upload_save_fnames.append(name)
 
         export_file_url = fs.url(eva_main(upload_save_fnames, []))
+        processing = False
     else:
         form = FileFieldForm()
 
     return render(request, 'aggregator/home.html', {
         "form": form,
-        "export_result": export_file_url
+        "export_result": export_file_url,
+        "processing": processing
     })
