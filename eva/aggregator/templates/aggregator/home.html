@@ -9,4 +9,6 @@
   </form>
 </section>
 
-{% endblock content %}
+{% if export_result %}
+<p><a href="{{ export_result }}">Download result CSV</a></p>
+{% endif %} {% endblock content %}

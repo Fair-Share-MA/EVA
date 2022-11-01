@@ -1,4 +1,6 @@
-import pandas as pd, magic, os, json, csv, jellyfish
+import pandas as pd, magic, json, csv, jellyfish
+from django.core.files.storage import FileSystemStorage
+from io import StringIO
 
 def load_excel(file):
     return pd.read_excel(file)
@@ -58,16 +60,20 @@ def merge_df(df1, df2, overrides):
 
     return temp
 
-def main(files, overrides):
+def eva_main(files, overrides):
     df = []
     df_merge = None
-    mime_types = json.load(open('mime_types.json'))
+    fs = FileSystemStorage()
+    mime_types = json.load(fs.open('mime_types.json'))
 
     print("Importing files from INPUT folder...")
 
-    for file in files:
-        file_mime = magic.from_file(file, mime=True)
+    for file_name in files:
+        file = fs.open(file_name)
+        file_mime = magic.from_buffer(file.readline(), mime=True)
+        file.seek(0)
         df.append(load_excel(file)) if file_mime == mime_types["excel"] else df.append(load_csv(file, mime_types["delimiters"]))
+        fs.delete(file_name)
 
     print("Files loaded. Merging...\nThis might take a while")
 
@@ -86,6 +92,7 @@ def main(files, overrides):
     print("Merging complete. Exporting...")
 
     #TODO: temperary storage - serve - then delete
-    df_merge.to_csv(output_dir + '/export.csv')
+    export_name = fs.save('export.csv', StringIO(df_merge.to_csv()))
 
     print("Export complete! Goodbye :)")
+    return export_name
