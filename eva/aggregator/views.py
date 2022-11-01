@@ -31,3 +31,6 @@ def home_screen(request):
         "export_result": export_file_url,
         "processing": processing
     })
+
+def documentation(request):
+    return render(request, 'aggregator/docs.html')

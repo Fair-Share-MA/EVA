@@ -1,0 +1,37 @@
+{% extends 'base.html' %} {% block content %}
+
+<section class="section has-background-light">
+  <p class="subtitle">Uploading files:</p>
+  <p>
+    Only Excel (any version), and CSV (any delimiter) files are accepted as
+    inputs. Any other files will not be accepted.
+  </p>
+  <hr />
+  <p class="subtitle">Overrides:</p>
+  <p>
+    Overrides are supplied in the form of a JSON object and are optional. This
+    is a key -> values pair that overrides the string matching algorithm used.
+    For example:
+  </p>
+  <br />
+  <p>
+    <code>{</code><br />
+    <code>&emsp;&emsp;"voter id": ["voter_id", "voter_registration_id"]</code
+    ><br />
+    <code>}</code>
+  </p>
+  <br />
+  <p>
+    Here, <code>voter id</code> is the key and <code>voter_id</code> and
+    <code>voter_registration_id</code> are matches.
+  </p>
+  <p>
+    The key is the trigger. When merging 2 files, if the algorithm comes across
+    <code>voter id</code> in the first file, it will try and match it to either
+    <code>voter id</code>, <code>voter_id</code>, or
+    <code>voter_registration_id</code> in the second file. If none of these are
+    found in the second file, the normal string matching algorithm will be used.
+  </p>
+</section>
+
+{% endblock content %}

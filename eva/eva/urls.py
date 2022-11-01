@@ -19,12 +19,13 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 from aggregator.views import (
-    home_screen
+    home_screen, documentation
 )
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', home_screen, name="home"),
+    path('documentation/', documentation, name="documentation")
 ]
 
 # serve media
