@@ -66,6 +66,7 @@ def eva_main(files, overrides):
     fs = FileSystemStorage()
     mime_types = json.load(fs.open('mime_types.json'))
 
+    if overrides: print("Using overrides: ", overrides)
     print("Importing files from INPUT folder...")
 
     for file_name in files:

@@ -13,7 +13,10 @@ def home_screen(request):
         processing = True
         form = FileFieldForm(request.POST, request.FILES)
         files = request.FILES.getlist('file_field')
-        overrides = json.loads(request.POST.get('overrides'))
+        
+        overrides = []
+        if request.POST.get('overrides'):
+            overrides = json.loads(request.POST.get('overrides'))
 
         fs = FileSystemStorage()
         upload_save_fnames = []
